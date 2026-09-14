@@ -7,10 +7,13 @@ interface ModalProps {
   onClose: () => void;
 }
 
-const modalRoot = document.body;
+const modalRoot = typeof document !== 'undefined' ? document.body : null;
 
 const Modal: React.FC<ModalProps> = ({ children, onClose }) => {
   useEffect(() => {
+ 
+    document.body.style.overflow = 'hidden';
+
     const handleKeyDown = (e: KeyboardEvent) => {
       if (e.key === 'Escape') {
         onClose();
@@ -18,8 +21,12 @@ const Modal: React.FC<ModalProps> = ({ children, onClose }) => {
     };
 
     window.addEventListener('keydown', handleKeyDown);
+
+  
     return () => {
       window.removeEventListener('keydown', handleKeyDown);
+      
+      document.body.style.overflow = '';
     };
   }, [onClose]);
 
@@ -28,6 +35,8 @@ const Modal: React.FC<ModalProps> = ({ children, onClose }) => {
       onClose();
     }
   };
+
+  if (!modalRoot) return null;
 
   return ReactDOM.createPortal(
     <div
