@@ -8,7 +8,7 @@ import type { NewNote, NoteTag } from '@/types/note';
 import css from './NoteForm.module.css';
 
 interface NoteFormProps {
-  onCancel?: () => void; // Сделали проп необязательным
+  onClose: () => void; 
 }
 
 const NoteSchema = Yup.object().shape({
@@ -33,7 +33,7 @@ const initialValues: NewNote = {
   tag: 'Todo' as NoteTag,
 };
 
-const NoteForm: React.FC<NoteFormProps> = ({ onCancel }) => {
+const NoteForm: React.FC<NoteFormProps> = ({ onClose }) => {
   const queryClient = useQueryClient();
 
   const createMutation = useMutation({
@@ -41,7 +41,7 @@ const NoteForm: React.FC<NoteFormProps> = ({ onCancel }) => {
 
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['notes'] });
-      if (onCancel) onCancel(); // Безопасный вызов, если передана функция
+      onClose(); 
     },
   });
 
@@ -114,15 +114,13 @@ const NoteForm: React.FC<NoteFormProps> = ({ onCancel }) => {
           </div>
 
           <div className={css.actions}>
-            {onCancel && (
-              <button
-                type="button"
-                className={css.cancelButton}
-                onClick={onCancel}
-              >
-                Cancel
-              </button>
-            )}
+            <button
+              type="button"
+              className={css.cancelButton}
+              onClick={onClose}
+            >
+              Cancel
+            </button>
 
             <button
               type="submit"

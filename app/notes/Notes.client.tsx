@@ -25,10 +25,9 @@ export default function NotesClient() {
     refetchOnMount: false,
   });
 
-
   const handleSearchChange = (value: string): void => {
     setSearch(value);
-    setPage(1); 
+    setPage(1);
   };
 
   const handlePageChange = (selectedItem: { selected: number }): void => {
@@ -60,7 +59,6 @@ export default function NotesClient() {
 
         <NoteList notes={notes} />
 
-        {}
         {totalPages > 1 && (
           <Pagination
             pageCount={totalPages}
@@ -69,10 +67,10 @@ export default function NotesClient() {
           />
         )}
 
-        {}
         {isModalOpen && (
           <Modal onClose={toggleModal}>
-            <NoteForm />
+            {}
+            <NoteForm onClose={toggleModal} />
           </Modal>
         )}
       </div>
